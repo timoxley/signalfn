@@ -1,0 +1,27 @@
+{
+  "name": "signalfn",
+  "version": "1.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "tape": "~3.0.2"
+  },
+  "description": "Simple signalling.",
+  "main": "index.js",
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "keywords": [
+    "events",
+    "emitter",
+    "signals",
+    "trigger",
+    "eventemitter",
+    "handlers"
+  ],
+  "author": "Tim Oxley <secoif@gmail.com>",
+  "license": "MIT"
+}
