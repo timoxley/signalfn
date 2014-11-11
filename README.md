@@ -85,7 +85,7 @@ API.onsave.remove()
 
 ### Trigger handler once
 
-```
+```js
 API.onsave.once(function() {
   console.log('trigger me once')
 })
@@ -99,3 +99,7 @@ API.save()
 // => triggered save 1
 // => triggered save 2
 ```
+
+## License
+
+MIT
