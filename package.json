@@ -23,5 +23,13 @@
     "handlers"
   ],
   "author": "Tim Oxley <secoif@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timoxley/signalfn.git"
+  },
+  "bugs": {
+    "url": "https://github.com/timoxley/signalfn/issues"
+  },
+  "homepage": "https://github.com/timoxley/signalfn"
 }
