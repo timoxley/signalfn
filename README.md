@@ -2,8 +2,7 @@
 
 Simple signalling.
 
-Makes events discoverable as part of the object's signature, rather
-than some random strings you need to find in the documentation.
+Basically an event emitter which only fires a single event. Use multiple emitters for different concerns. This makes events discoverable as part of the object's signature, rather than just random strings you need to find in the documentation.
 
 ## Usage
 
