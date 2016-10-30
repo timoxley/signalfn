@@ -1,11 +1,14 @@
 all: signalfn.js
 
-signalfn.js: index.js
+signalfn.js: index.js package.json
 	babel index.js > signalfn.js
 
 test: all
 	tape test/*.js
 
-prepublish: test all
+prepublish: clean test all
 
-.PHONY: prepublish test build
+clean:
+	rm signalfn.js
+
+.PHONY: all prepublish test clean
