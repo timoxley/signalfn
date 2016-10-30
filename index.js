@@ -1,50 +1,82 @@
-"use strict"
+'use strict'
 
-module.exports = function(context) {
-  function signal() {
-    return signal.add.apply(signal, arguments)
+module.exports = function (...args) {
+  const signal = new Signal(...args)
+  const add = function add (...fns) {
+    return signal.add(...fns)
   }
-  signal.beforeFns = []
-  signal.afterFns = []
-  signal.onceFns = []
-  signal.after = function after(fn) {
-    signal.afterFns.push(fn)
+
+  Object.setPrototypeOf(add, signal)
+  return add
+}
+
+module.exports.Signal = Signal
+
+class Signal {
+  constructor (...fns) {
+    this.beforeFns = new Set()
+    this.duringFns = new Set()
+    this.afterFns = new Set()
+    this.add(...fns)
+  }
+
+  after (...fns) {
+    fns.forEach(fn => this.afterFns.add(fn))
     return this
   }
-  signal.before =
-  signal.add = function add(fn) {
-    signal.beforeFns.push(fn)
+
+  add (...fns) {
+    fns.forEach(fn => this.duringFns.add(fn))
     return this
   }
-  signal.once = function once(fn) {
-    signal.beforeFns.push(fn)
-    signal.onceFns.push(fn)
+
+  before (...fns) {
+    fns.forEach(fn => this.beforeFns.add(fn))
     return this
   }
-  signal.remove = function remove(fn) {
-    if (!fn) {
-      signal.beforeFns.length = 0
-      signal.afterFns.length = 0
-      signal.onceFns.length = 0
+
+  once (...fns) {
+    this.add(...fns.map(fn => {
+      const onceFn = (...args) => {
+        this.remove(onceFn)
+        return fn(...args)
+      }
+      return onceFn
+    }))
+
+    return this
+  }
+
+  remove (...fns) {
+    if (!fns.length) {
+      this.beforeFns.clear()
+      this.duringFns.clear()
+      this.afterFns.clear()
       return this
     }
-    signal.beforeFns.splice(signal.beforeFns.indexOf(fn), 1)
-    signal.afterFns.splice(signal.afterFns.indexOf(fn), 1)
-    signal.onceFns.splice(signal.onceFns.indexOf(fn), 1)
+
+    fns.forEach(fn => {
+      this.beforeFns.delete(fn)
+      this.duringFns.delete(fn)
+      this.afterFns.delete(fn)
+    })
+
     return this
   }
-  signal.fire = function fire() {
-    for (var i = 0; i < signal.beforeFns.length; i++) {
-      var fn = signal.beforeFns[i]
-      fn.apply(context || this, arguments)
-      if (signal.onceFns.indexOf(fn) !== -1) signal.remove(fn)
+
+  fire (...args) {
+    for (let fn of this.beforeFns) {
+      fn(...args)
     }
-    for (var i = 0; i < signal.afterFns.length; i++) {
-      var fn = signal.afterFns[i]
-      fn.apply(context || this, arguments)
-      if (signal.onceFns.indexOf(fn) !== -1) signal.remove(fn)
+
+    for (let fn of this.duringFns) {
+      fn(...args)
     }
+
+    for (let fn of this.afterFns) {
+      fn(...args)
+    }
+
     return this
   }
-  return signal
 }

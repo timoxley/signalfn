@@ -1,23 +1,21 @@
-"use strict"
+'use strict'
 
-var test = require("tape")
+const test = require('tape')
 
-var Signal = require('../')
+const Signal = require('../')
 
-test('add + fire', function(t) {
-  var signal = Signal()
-  signal(function() {
-    t.end()
-  })
+test('add + fire', t => {
+  const signal = Signal()
+  signal(() => t.end())
   signal.fire()
 })
 
-test('fire with values', function(t) {
-  var signal = Signal()
-  var expected1 = {}
-  var expected2 = {}
+test('fire with values', t => {
+  const signal = Signal()
+  const expected1 = {}
+  const expected2 = {}
 
-  signal(function(fired1, fired2) {
+  signal((fired1, fired2) => {
     t.equal(fired1, expected1)
     t.equal(fired2, expected2)
     t.end()
@@ -26,10 +24,10 @@ test('fire with values', function(t) {
   signal.fire(expected1, expected2)
 })
 
-test('remove', function(t) {
-  var signal = Signal()
-  var count = 0
-  function toRemove() {
+test('remove', t => {
+  const signal = Signal()
+  let count = 0
+  function toRemove () {
     t.equal(++count, 1)
   }
   signal(toRemove)
@@ -39,16 +37,16 @@ test('remove', function(t) {
   t.end()
 })
 
-test('remove one among many', function(t) {
+test('remove one among many', t => {
   t.plan(3)
-  var signal = Signal()
-  var count = 0
-  var count2 = 0
-  function toRemove() {
+  const signal = Signal()
+  let count = 0
+  let count2 = 0
+  function toRemove () {
     t.equal(++count, 1)
   }
   signal(toRemove)
-  signal(function() {
+  signal(() => {
     t.ok(++count2)
   })
   signal.fire()
@@ -56,10 +54,10 @@ test('remove one among many', function(t) {
   signal.fire()
 })
 
-test('once', function(t) {
-  var signal = Signal()
-  var count = 0
-  signal.once(function toRemove() {
+test('once', t => {
+  const signal = Signal()
+  let count = 0
+  signal.once(() => {
     t.equal(++count, 1)
   })
   signal.fire()

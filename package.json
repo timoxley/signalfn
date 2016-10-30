@@ -3,24 +3,47 @@
   "version": "1.0.0",
   "dependencies": {},
   "devDependencies": {
-    "tape": "~3.0.2"
+    "babel": "^6.5.2",
+    "babel-cli": "^6.18.0",
+    "babel-eslint": "^7.1.0",
+    "babel-preset-latest": "^6.16.0",
+    "standard": "^8.5.0",
+    "tape": "~4.6.2"
   },
   "description": "Simple signalling.",
-  "main": "index.js",
+  "main": "signalfn.js",
   "directories": {
     "example": "example",
     "test": "test"
   },
   "scripts": {
-    "test": "tape test/*.js"
+    "lint": "standard",
+    "test": "make test",
+    "prepublish": "make prepublish"
+  },
+  "standard": {
+    "parser": "babel-eslint",
+    "ignore": "signalfn.js"
+  },
+  "babel": {
+    "presets": [
+      "latest"
+    ]
   },
   "keywords": [
+    "event",
     "events",
     "emitter",
+    "emitters",
+    "signal",
     "signals",
     "trigger",
+    "triggers",
     "eventemitter",
-    "handlers"
+    "eventemitters",
+    "handler",
+    "handlers",
+    "async"
   ],
   "author": "Tim Oxley <secoif@gmail.com>",
   "license": "MIT",
